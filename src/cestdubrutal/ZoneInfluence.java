@@ -1,9 +1,10 @@
 package cestdubrutal;
 
 public class ZoneInfluence {
-	String nom = new String();
-	String nombreEtudiant = new String();
-	boolean controle;
+	private String nom = new String();
+	private String nombreEtudiant = new String();
+	private boolean controle;
+	public int nbJoueur;
 	
 	public void consulterECTS() {
 		
