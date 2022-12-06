@@ -4,6 +4,7 @@ public class ZoneInfluence {
 
 	static public enum ZoneInflu{BU, BDE, ADMIN, HALLESINDUS,HALLESPORTIVE}
 	final static public int NBZONEINFLUENCE=5;
+	
 	//indice du tableau qui s'incrémente quand on ajoute un élève et qui se décrémente quand tué élève
 	public int indiceTabEleve=0;
 	
@@ -16,7 +17,7 @@ public class ZoneInfluence {
 		this.nom=nom;
 		this.nombreEtudiant=0;
 		this.controle=false;
-		this.tabEleveZone = new Eleve[20]; //ici aucun Eleve n'est construit!!
+		this.tabEleveZone = new Eleve[20]; //ici aucun Eleve n'est construit!! : ce qu'on pourrait faire c'est deux tableaux un associé au j1 et un au j2
 	}
 	
 	public void ajouterEleve(Eleve eleveAAjouter) {
@@ -38,15 +39,16 @@ public class ZoneInfluence {
 			}
 	}
 }
+	
 	public static void main(String[] args) {
 //test tableau
 		ZoneInfluence A= new ZoneInfluence(ZoneInflu.ADMIN);
 		Joueur j1=new Joueur();
 		Joueur j2=new Joueur();
-		A.ajouterEleve(j1.tabEleve[0]);
-		A.ajouterEleve(j1.tabEleve[1]);
-		A.ajouterEleve(j2.tabEleve[0]);
-		A.ajouterEleve(j2.tabEleve[1]);
+		A.ajouterEleve(j1.getTabEleve()[0]);
+		A.ajouterEleve(j1.getTabEleve()[1]);
+		A.ajouterEleve(j2.getTabEleve()[0]);
+		A.ajouterEleve(j2.getTabEleve()[1]);
 //		
 //		Eleve e1=new Eleve();
 //		Eleve e2=new Eleve();
@@ -87,29 +89,29 @@ public class ZoneInfluence {
 		}
 	}
 	
-	//return vrai si meme joueur
+	//return vrai si les deux eleves de l'indice 
 	public boolean indiceEleveMemeJoueur(int indice1, int indice2, Joueur j1, Joueur j2) {
 		//entier stock si j1 ou j2
 		int j=2;
 		
 		//on regarde si l'eleve correspondant à l'indice1 vient du j1 ou j2
-		for(int i=0;i<j1.tabEleve.length;i++) {
-			if(this.getTabEleveZone()[indice1]==j1.tabEleve[i]) {
+		for(int i=0;i<j1.getTabEleve().length;i++) {
+			if(this.getTabEleveZone()[indice1]==j1.getTabEleve()[i]) {
 				j=1;
 		}
 		}
 		
 		if(j==1){
-			for(int i=0;i<j1.tabEleve.length;i++) {
-				if(this.getTabEleveZone()[indice2]==j1.tabEleve[i]) {
+			for(int i=0;i<j1.getTabEleve().length;i++) {
+				if(this.getTabEleveZone()[indice2]==j1.getTabEleve()[i]) {
 					return true;
 			}
 		}
 			return false;
 		}
 		else{
-			for(int i=0;i<j2.tabEleve.length;i++) {
-				if(this.getTabEleveZone()[indice2]==j2.tabEleve[i]) {
+			for(int i=0;i<j2.getTabEleve().length;i++) {
+				if(this.getTabEleveZone()[indice2]==j2.getTabEleve()[i]) {
 					return true;
 			}
 		}
