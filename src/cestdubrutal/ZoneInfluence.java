@@ -149,11 +149,35 @@ public class ZoneInfluence {
 		this.tabEleveZone = tabEleveZone;
 	}
 
-	public boolean isControle() {
-		return controle;
+	public boolean isControle(Joueur j1, Joueur j2) {
+		if (isEnnemieZI(j1,j2)) {
+			this.controle=false;
+			return controle;
+		}
+		else {
+			this.controle=true;
+			return controle;
+		}
 	}
 
 	public void setControle(boolean controle) {
 		this.controle = controle;
+	}
+	
+	//voir si les élèves d'une zone appartiennent au même joeur
+	//return true : si les 2 joueurs sont presents
+	//return false : si 1 joueurs est present
+	public boolean isEnnemieZI(Joueur j1, Joueur j2) {
+		boolean deuxJoueur=false;
+		for(int i=0; i<getTabEleveZone().length; i++) {
+			for(int k=0; k<getTabEleveZone().length; k++) {
+				
+				if(tabEleveZone[i]!=null && tabEleveZone[k]!=null && !indiceEleveMemeJoueur(i, k, j1, j2)) {
+					deuxJoueur=true;
+				}
+			}
+		}
+		return(deuxJoueur);
+		
 	}
 }
