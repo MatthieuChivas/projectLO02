@@ -16,6 +16,26 @@ public class Partie {
 		this.estTerminé=false;		
 	}
 	
+	public int[] zonesCtrl(ZoneInfluence[] zones, Joueur j1, Joueur j2) {
+		int[] tab= new int[zones.length];
+		for(int i=0; i<zones.length; i++) {
+			if(zones[i].isControle(j1, j2)) {
+				tab[i]=i;
+			}
+		}
+		return(tab);
+	}
+	
+	public int[] zonesNonCtrl(ZoneInfluence[] zones, Joueur j1, Joueur j2) {
+		int[] tab= new int[zones.length];
+		for(int i=0; i<zones.length; i++) {
+			if(!zones[i].isControle(j1, j2)) {
+				tab[i]=i;
+			}
+		}
+		return(tab);
+	}
+	
 	//démarage de la partie
 	public static void main(String[] args) {
 		//---------------
