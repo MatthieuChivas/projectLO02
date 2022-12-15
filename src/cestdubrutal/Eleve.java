@@ -1,9 +1,9 @@
 package cestdubrutal;
 
-public class Eleve {
+public class Eleve implements Strategie {
 	static public enum Strategie{Attaquer, Soigner, Aleatoire};
 	
-	private Strategie Strat;
+	public Strategie Strat;
 	public Characteristique CharacteristiqueEleve;
 	private int ECTS;
 	private boolean vire;
@@ -63,14 +63,20 @@ public class Eleve {
 	}
 
 	public void setStrat(Strategie strat) {
-		Strat = strat;
+		this.Strat = strat;
 	}
 
 	public void estilvire() {
 		if(this.ECTS<=0) {
 			this.setVire(true);
-		}
-		// TODO Auto-generated method stub
+		}	
+	}
+	
+	public void combattre(Eleve e){
+		//Strat.jouer(this, e);
+	}
+
+	public void jouer(Eleve eleve1, Eleve eleve2) {
 		
 	}
 }
