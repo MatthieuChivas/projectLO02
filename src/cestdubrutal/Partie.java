@@ -1,6 +1,7 @@
 package cestdubrutal;
 
 import java.util.Scanner;
+import java.util.ArrayList;
 
 import cestdubrutal.Joueur.Programme;
 import cestdubrutal.ZoneInfluence.ZoneInflu;
@@ -16,21 +17,21 @@ public class Partie {
 		this.estTerminé=false;		
 	}
 	
-	public int[] zonesCtrl(ZoneInfluence[] zones, Joueur j1, Joueur j2) {
-		int[] tab= new int[zones.length];
-		for(int i=0; i<zones.length; i++) {
-			if(zones[i].isControle(j1, j2)) {
-				tab[i]=i;
+	public ArrayList<ZoneInfluence> zonesCtrl(ArrayList<ZoneInfluence> zones, Joueur j1, Joueur j2) {
+		ArrayList<ZoneInfluence> tab= new ArrayList<ZoneInfluence>();
+		for(int i=0; i<zones.size(); i++) {
+			if(zones.get(i).isControle(j1, j2)) {
+				tab.add(zones.get(i));
 			}
 		}
 		return(tab);
 	}
 	
-	public int[] zonesNonCtrl(ZoneInfluence[] zones, Joueur j1, Joueur j2) {
-		int[] tab= new int[zones.length];
-		for(int i=0; i<zones.length; i++) {
-			if(!zones[i].isControle(j1, j2)) {
-				tab[i]=i;
+	public ArrayList<ZoneInfluence> zonesNonCtrl(ArrayList<ZoneInfluence> zones, Joueur j1, Joueur j2) {
+		ArrayList<ZoneInfluence> tab= new ArrayList<ZoneInfluence>();
+		for(int i=0; i<zones.size(); i++) {
+			if(!zones.get(i).isControle(j1, j2)) {
+				tab.add(zones.get(i));
 			}
 		}
 		return(tab);
@@ -54,38 +55,50 @@ public class Partie {
 		
 		//------------
 		//ETAPE 2
-		ZoneInfluence[] tabZI = new ZoneInfluence[5];
-		tabZI[0] = new ZoneInfluence(ZoneInflu.BU);
-		tabZI[1] = new ZoneInfluence(ZoneInflu.BDE);
-		tabZI[2] = new ZoneInfluence(ZoneInflu.ADMIN);
-		tabZI[3] = new ZoneInfluence(ZoneInflu.HALLESINDUS);
-		tabZI[4] = new ZoneInfluence(ZoneInflu.HALLESPORTIVE);
+		ArrayList<ZoneInfluence> tabZI = new ArrayList<ZoneInfluence>(5);
+		tabZI.add(new ZoneInfluence(ZoneInflu.BU));
+		tabZI.add(new ZoneInfluence(ZoneInflu.BDE));
+		tabZI.add(new ZoneInfluence(ZoneInflu.ADMIN));
+		tabZI.add(new ZoneInfluence(ZoneInflu.HALLESINDUS));
+		tabZI.add(new ZoneInfluence(ZoneInflu.HALLESPORTIVE));
 		
 		//pour les deux joueurs on va placer les eleves a placer qui ne sont pas réserviste
 		//plutot comme ça : pour chaque zone influence : on va placer un nombre de joueur et on choisi ensuite les indexs
 		//FAIRE UNE FONCTION CAR dépend du joueur!!
 		int nombreEleveZI;
-		for(int i=0;i<2;i++) {
-			for(ZoneInfluence ZI:tabZI) {
-				System.out.println("Combien d'élève sur :"+ ZI.getNom().toString());
-				nombreEleveZI=sc.nextInt();
-				//au minimum un!!
-				
-				for(int eleve=0;eleve<nombreEleveZI;eleve++) {
-					//vérif qu'il est pas réserviste
-					//vérif qu'il ne soit pas déjà autre part (à l'arriver de cette zone on change un attribut et on le remodif a chaque changement)
-					System.out.println("Indice eleve :");
-					if(i==0) {
-					ZI.ajouterEleve(j1.getTabEleve()[sc.nextInt()]);//vu que ya j1 faire fonction avec en parametre le joueur!!
-					}
-					else if(i==1) {
-					ZI.ajouterEleve(j2.getTabEleve()[sc.nextInt()]);
-					}
-					}
-				
-				
-			}
-			}
+//		for(int i=0;i<2;i++) {
+//			for(ZoneInfluence ZI:tabZI) {
+//				System.out.println("Combien d'eleve sur :"+ ZI.getNom().toString());
+//				nombreEleveZI=sc.nextInt();
+//				//au minimum un!!
+//				
+//				for(int eleve=0;eleve<nombreEleveZI;eleve++) {
+//					//vérif qu'il est pas réserviste
+//					//vérif qu'il ne soit pas déjà autre part (à l'arriver de cette zone on change un attribut et on le remodif a chaque changement)
+//					System.out.println("Indice eleve :");
+//					if(i==0) {
+//					ZI.ajouterEleve(j1.getTabEleve(sc.nextInt()));//vu que ya j1 faire fonction avec en parametre le joueur!!
+//					}
+//					else if(i==1) {
+//					ZI.ajouterEleve(j2.getTabEleve(sc.nextInt()));
+//					}
+//					}
+//				
+//				
+//			}
+//			}
+		
+		for(int i=0; i< tabZI.size(); i++) {
+			System.out.println(j1.getPseudo() + " Combien d'eleve sur : "+ tabZI.get(i).getNom());
+			int x = (int)(Math.random()*4)+1;//minimum 1 Eleve par zone
+			System.out.println(x);
+		}
+		
+		for(int i=0; i< tabZI.size(); i++) {
+			System.out.println(j2.getPseudo() + " Combien d'eleve sur : "+ tabZI.get(i).getNom());
+			int x = (int)(Math.random()*4)+1;
+			System.out.println(x);
+		}
 		
 		
 //		tabZI[0].ajouterEleve(j1.getTabEleve()[0]);
@@ -112,14 +125,14 @@ public class Partie {
 			//System.out.println("ZI"+indiceZoneInflu);
 			
 			//ordonne la liste en fonction des meilleurs initiative 
-			tabZI[indiceZoneInflu].rangerListeMeilleurInitiative();
+			tabZI.get(indiceZoneInflu).rangerListeMeilleurInitiative();
 			
 			//pour chaque élève on va attaquer ou soigner les autres
-			for(int indiceEleve=0;indiceEleve<tabZI[indiceZoneInflu].indiceTabEleve;indiceEleve++) {
-				System.out.println(tabZI[indiceZoneInflu].getTabEleveZone()[indiceEleve].getStrat());
+			for(int indiceEleve=0;indiceEleve<tabZI.get(indiceZoneInflu).indiceTabEleve;indiceEleve++) {
+				System.out.println(tabZI.get(indiceZoneInflu).getTabEleveZone(indiceEleve).getStrat());
 				
 				//pour les joueurs avec comme Strat attaquer
-				if(tabZI[indiceZoneInflu].getTabEleveZone()[indiceEleve].getStrat()==Eleve.Strategie.Attaquer) {
+				if(tabZI.get(indiceZoneInflu).getTabEleveZone(indiceEleve).getStrat()==Eleve.Strategie.Attaquer) {
 					//aléatoire fonctionne OK sinon passer au suivant (break;)
 					//trouver le moins de crédit ECTS parmi l'ennemie
 					//donc regarder la liste un par un
@@ -131,15 +144,15 @@ public class Partie {
 					
 					//tester si l'élève n'est pas mort?
 					//on regarde pour tous les élèves de la Zone Influence
-					for(int j=0;j<tabZI[indiceZoneInflu].indiceTabEleve;j++) {
+					for(int j=0;j<tabZI.get(indiceZoneInflu).indiceTabEleve;j++) {
 						
 						//si l'élève est mort continue
-						if(tabZI[indiceZoneInflu].getTabEleveZone()[j].isVire()) {
+						if(tabZI.get(indiceZoneInflu).getTabEleveZone(j).isVire()) {
 							continue;
 						}
 						
 						//si l'élève n'appartient pas au même joueur 
-						if(!(tabZI[indiceZoneInflu].indiceEleveMemeJoueur(indiceEleve, j, j1, j2))) {
+						if(!(tabZI.get(indiceZoneInflu).indiceEleveMemeJoueur(indiceEleve, j, j1, j2))) {
 							
 							//on stocke dans une liste pour pouvoir avoir les indices des joueurs à attaquer
 							indiceJoueurAdverse[indiceCombat]=j;
@@ -150,24 +163,24 @@ public class Partie {
 						//TROUVER LE PLUS FAIBLE EN ECTS
 						//si indiceJoueurAdverse=1 enlever ECTS à lui
 						if(indiceCombat==1) {
-							tabZI[indiceZoneInflu].getTabEleveZone()[indiceJoueurAdverse[0]].setECTS(tabZI[indiceZoneInflu].getTabEleveZone()[indiceJoueurAdverse[0]].getECTS()-10);
+							tabZI.get(indiceZoneInflu).getTabEleveZone(indiceJoueurAdverse[0]).setECTS(tabZI.get(indiceZoneInflu).getTabEleveZone(indiceJoueurAdverse[0]).getECTS()-10);
 							//verif si le reuf est plus à l'UTT
-							tabZI[indiceZoneInflu].getTabEleveZone()[indiceJoueurAdverse[0]].estilvire();
+							tabZI.get(indiceZoneInflu).getTabEleveZone(indiceJoueurAdverse[0]).estilvire();
 						}
 						else if(indiceCombat>1){
 							
 							//trouver le plus faible en ECTS pour lui enlever des ECTS
 							int indiceMinEcts=indiceJoueurAdverse[0];
 							for(int indiceComb=1;indiceComb<indiceCombat;indiceComb++) {
-								if(tabZI[indiceZoneInflu].getTabEleveZone()[indiceJoueurAdverse[indiceMinEcts]].getECTS()>tabZI[indiceZoneInflu].getTabEleveZone()[indiceJoueurAdverse[indiceComb]].getECTS()) {
+								if(tabZI.get(indiceZoneInflu).getTabEleveZone(indiceJoueurAdverse[indiceMinEcts]).getECTS()>tabZI.get(indiceZoneInflu).getTabEleveZone(indiceJoueurAdverse[indiceComb]).getECTS()) {
 									indiceMinEcts=indiceJoueurAdverse[indiceComb+1];
 								}
 							//lui enlever des ECTS
 							//-----------------------------
 							//faire fonction qui calcul combien perd l'ennemie en entrée élève qui attaque et élève qui prend dans sa gueuele!
-							tabZI[indiceZoneInflu].getTabEleveZone()[indiceMinEcts].setECTS(tabZI[indiceZoneInflu].getTabEleveZone()[indiceMinEcts].getECTS()-10);
+							tabZI.get(indiceZoneInflu).getTabEleveZone(indiceMinEcts).setECTS(tabZI.get(indiceZoneInflu).getTabEleveZone(indiceMinEcts).getECTS()-10);
 							//verif si le reuf est plus à l'UTT
-							tabZI[indiceZoneInflu].getTabEleveZone()[indiceMinEcts].estilvire();
+							tabZI.get(indiceZoneInflu).getTabEleveZone(indiceMinEcts).estilvire();
 														
 						}							
 						}
@@ -205,13 +218,13 @@ public class Partie {
 				for(int eleve=0;eleve<nombreEleveZI;eleve++) {
 					//vérif qu'il est réserviste
 					//vérif qu'il ne soit pas déjà autre part (à l'arriver de cette zone on change un attribut et on le remodif a chaque changement)
-					if()
+					//if()
 					System.out.println("Indice eleve :");
 					if(i==0) {
-					ZI.ajouterEleve(j1.getTabEleve()[sc.nextInt()]);//vu que ya j1 faire fonction avec en parametre le joueur!!
+					ZI.ajouterEleve(j1.getTabEleve(sc.nextInt()));//vu que ya j1 faire fonction avec en parametre le joueur!!
 					}
 					else if(i==1) {
-					ZI.ajouterEleve(j2.getTabEleve()[sc.nextInt()]);
+					ZI.ajouterEleve(j2.getTabEleve(sc.nextInt()));
 					}
 					}
 				
@@ -221,18 +234,18 @@ public class Partie {
 		
 		//faire pareil avec le j2!
 		//demander s'il veut faire des mouvements sur les réservistes
-		int reponse;
-		for(Eleve el:j1.getTabEleve()) {
-			if(el.isReserviste()){
-				System.out.println("Est ce que tu veux le mettre?");
-				reponse=sc.nextInt();
-				if(reponse==1) {
-					//fonction qui fait une liste de toute les zones non contrôlé! avec en argument un tableau de zone d'influence : retour un tableau avec les indices de ceux pas contrôlé!
-					
-						
-					}
-				}
-			}
+//		int reponse;
+//		for(Eleve el:j1.getTabEleve()) {
+//			if(el.isReserviste()){
+//				System.out.println("Est ce que tu veux le mettre?");
+//				reponse=sc.nextInt();
+//				if(reponse==1) {
+//					//fonction qui fait une liste de toute les zones non contrôlé! avec en argument un tableau de zone d'influence : retour un tableau avec les indices de ceux pas contrôlé!
+//					
+//						
+//					}
+//				}
+//			}
 		//fonction qui fait une liste de toute les zones  contrôlé! avec en argument un tableau de zone d'influence : retour un tableau avec les indices de ceux contrôlé!
 		//on fait une fonction qui fait zone par zone controlé et on demande au joueur s'il veut déplacer ses joueurs et quelle strat
 		
@@ -241,4 +254,3 @@ public class Partie {
 		
 		}//main
 }//class
-	
