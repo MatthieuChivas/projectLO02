@@ -28,9 +28,11 @@ public class Characteristique {
 	public int getForce() {
 		return force;
 	}
-
+	
 	public void setForce(int force) {
+		if(this.force+force<=10) {
 		this.force = force;
+		}
 	}
 
 	public int getDexterite() {
@@ -38,7 +40,9 @@ public class Characteristique {
 	}
 
 	public void setDexterite(int dexterite) {
+		if(this.dexterite+dexterite<=10) {
 		this.dexterite = dexterite;
+		}
 	}
 
 	public int getResistance() {
@@ -46,7 +50,9 @@ public class Characteristique {
 	}
 
 	public void setResistance(int resistance) {
+		if(this.resistance+resistance<=10) {
 		this.resistance = resistance;
+		}
 	}
 
 	public int getConstitution() {
@@ -54,7 +60,9 @@ public class Characteristique {
 	}
 
 	public void setConstitution(int constitution) {
+		if(this.constitution+constitution<=30) {
 		this.constitution = constitution;
+		}
 	}
 
 	public int getInitiative() {
@@ -62,6 +70,8 @@ public class Characteristique {
 	}
 
 	public void setInitiative(int initiative) {
+		if(this.initiative+initiative<=10) {
 		this.initiative = initiative;
+		}
 	}
 }
