@@ -135,4 +135,13 @@ public class ZoneInfluence {
 	public void setControle(boolean controle) {
 		this.controle = controle;
 	}
+	public boolean dejaEleve(Eleve eleve) {
+		boolean deja = false;
+		for(int i=0; i<tabEleveZone.size(); i++) {
+			if(tabEleveZone.get(i)==eleve) {
+				deja = true;
+			}
+		}
+		return deja;
+	}
 }
