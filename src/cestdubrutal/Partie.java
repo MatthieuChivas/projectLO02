@@ -66,46 +66,55 @@ public class Partie {
 		//plutot comme ça : pour chaque zone influence : on va placer un nombre de joueur et on choisi ensuite les indexs
 		//FAIRE UNE FONCTION CAR dépend du joueur!!
 		int nombreEleveZI;
-//		for(int i=0;i<2;i++) {
-//			for(ZoneInfluence ZI:tabZI) {
-//				System.out.println("Combien d'eleve sur :"+ ZI.getNom().toString());
-//				nombreEleveZI=sc.nextInt();
-//				//au minimum un!!
-//				
-//				for(int eleve=0;eleve<nombreEleveZI;eleve++) {
-//					//vérif qu'il est pas réserviste
-//					//vérif qu'il ne soit pas déjà autre part (à l'arriver de cette zone on change un attribut et on le remodif a chaque changement)
-//					System.out.println("Indice eleve :");
-//					if(i==0) {
-//					ZI.ajouterEleve(j1.getTabEleve(sc.nextInt()));//vu que ya j1 faire fonction avec en parametre le joueur!!
-//					}
-//					else if(i==1) {
-//					ZI.ajouterEleve(j2.getTabEleve(sc.nextInt()));
-//					}
-//					}
-//				
-//				
-//			}
-//			}
-		
+		System.out.println("\n");
 		for(int i=0; i< tabZI.size(); i++) {
-			System.out.println(j1.getPseudo() + " Combien d'eleve sur : "+ tabZI.get(i).getNom());
-			int x = (int)(Math.random()*4)+1;//minimum 1 Eleve par zone
-			System.out.println(x);
-		}
-		
-		for(int i=0; i< tabZI.size(); i++) {
-			System.out.println(j2.getPseudo() + " Combien d'eleve sur : "+ tabZI.get(i).getNom());
 			int x = (int)(Math.random()*4)+1;
-			System.out.println(x);
+			System.out.println(j1.getPseudo() + " vous avez "+ x + " eleve(s) sur :" + tabZI.get(i).getNom());
+			for(int j=0; j<x; j++) {
+				int eleve = (int)(Math.random()*20);
+				boolean aucunMemeEleve = false;
+				while(!aucunMemeEleve) {
+					aucunMemeEleve = true;
+					for(int k=0; k<=i ; k++) {
+						if(tabZI.get(k).dejaEleve(j1.getTabEleve(eleve))) {
+							eleve=eleve+1;
+							if(eleve==20) {
+								eleve=0;
+							}
+							aucunMemeEleve = false;
+						}
+					}
+				}
+				System.out.println("l'eleve numero : " + eleve);
+				tabZI.get(i).setTabEleveZone(j1.getTabEleve(eleve));
+			}
+			tabZI.get(i).rangerListeMeilleurInitiative();//a la fin on range chaque zone
 		}
 		
-		
-//		tabZI[0].ajouterEleve(j1.getTabEleve()[0]);
-//		tabZI[0].ajouterEleve(j2.getTabEleve()[0]);
-//		
-//		tabZI[1].ajouterEleve(j1.getTabEleve()[1]);
-//		tabZI[1].ajouterEleve(j2.getTabEleve()[1]);
+		System.out.println("\n");
+		for(int i=0; i< tabZI.size(); i++) {
+			int x = (int)(Math.random()*4)+1;
+			System.out.println(j2.getPseudo() + " vous avez "+ x + " eleve(s) sur :" + tabZI.get(i).getNom());
+			for(int j=0; j<x; j++) {
+				int eleve = (int)(Math.random()*20);
+				boolean aucunMemeEleve = false;
+				while(!aucunMemeEleve) {
+					aucunMemeEleve = true;
+					for(int k=0; k<=i ; k++) {
+						if(tabZI.get(k).dejaEleve(j2.getTabEleve(eleve))) {
+							eleve=eleve+1;
+							if(eleve==20) {
+								eleve=0;
+							}
+							aucunMemeEleve = false;
+						}
+					}
+				}
+				System.out.println("l'eleve numero : " + eleve);
+				tabZI.get(i).setTabEleveZone(j2.getTabEleve(eleve));
+			}
+			tabZI.get(i).rangerListeMeilleurInitiative();//a la fin on range chaque zone
+		}
 
 		
 		//----------
