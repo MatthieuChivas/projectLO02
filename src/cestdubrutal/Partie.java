@@ -119,84 +119,87 @@ public class Partie {
 		
 		//----------
 		//ETAPE 3 : Mélééé
-		
-		//presque fini faut juste changer tout les déplacemnet dans les liste en indice et pas direct en : 
-		
-		//cette liste stocke les indices des joueurs adverse
-		int[] indiceJoueurAdverse=new int[20];
-		
-		//ajouter un while avec le flag de l'adversaire 
-		
-		//tester dans toutes les zones d'influences : remplacer le 2 par 5 i.e : ZoneInfluence.NBZONEINFLUENCE!!
-		for(int indiceZoneInflu=0;indiceZoneInflu<5;indiceZoneInflu++) {
-			//mettre le flag et lui dire de break si c'est le cas!
-			
-			//System.out.println("ZI"+indiceZoneInflu);
-			
-			//ordonne la liste en fonction des meilleurs initiative 
-			tabZI.get(indiceZoneInflu).rangerListeMeilleurInitiative();
-			
-			//pour chaque élève on va attaquer ou soigner les autres
-			for(int indiceEleve=0;indiceEleve<tabZI.get(indiceZoneInflu).indiceTabEleve;indiceEleve++) {
-				System.out.println(tabZI.get(indiceZoneInflu).getTabEleveZone(indiceEleve).getStrat());
-				
-				//pour les joueurs avec comme Strat attaquer
-				if(tabZI.get(indiceZoneInflu).getTabEleveZone(indiceEleve).getStrat()==Eleve.Strategie.Attaquer) {
-					//aléatoire fonctionne OK sinon passer au suivant (break;)
-					//trouver le moins de crédit ECTS parmi l'ennemie
-					//donc regarder la liste un par un
-					//regarder si pas le même joueur stocker dans une liste temporaire (récuperer une liste d'indice plus simple!)
-					//créer une fonction qui 
+		int indiceZone=0;
+				while(!(tabZI.get(indiceZone).isControle(j1, j2))) {
 					
+					//ordonne la liste en fonction des meilleurs initiative 
+					tabZI.get(indiceZoneInflu).rangerListeMeilleurInitiative();
 					
-					int indiceCombat=0;
+					int indiceElev=0;
 					
-					//tester si l'élève n'est pas mort?
-					//on regarde pour tous les élèves de la Zone Influence
-					for(int j=0;j<tabZI.get(indiceZoneInflu).indiceTabEleve;j++) {
+					//tant que la zone n'est pas controlé et on a pas fait le tour de tout les élèves on continue à faire jouer les élèves un part un 
+					while(!(tabZI.get(indiceZone).isControle(j1, j2) || indiceElev<tabZI.get(indiceZone).getTabEleveZone().size())){
 						
-						//si l'élève est mort continue
-						if(tabZI.get(indiceZoneInflu).getTabEleveZone(j).isVire()) {
-							continue;
-						}
-						
-						//si l'élève n'appartient pas au même joueur 
-						if(!(tabZI.get(indiceZoneInflu).indiceEleveMemeJoueur(indiceEleve, j, j1, j2))) {
+						//pour les joueurs avec comme Strat attaquer
+						if(tabZI.get(indiceZoneInflu).getTabEleveZone(indiceEleve).getStrat()==Eleve.Strategie.Attaquer) {
+							//aléatoire fonctionne OK sinon passer au suivant (break;)
+							//trouver le moins de crédit ECTS parmi l'ennemie
+							//donc regarder la liste un par un
+							//regarder si pas le même joueur stocker dans une liste temporaire (récuperer une liste d'indice plus simple!)
+							//créer une fonction qui 
 							
-							//on stocke dans une liste pour pouvoir avoir les indices des joueurs à attaquer
-							indiceJoueurAdverse[indiceCombat]=j;
-							indiceCombat++;
-							System.out.println(indiceCombat);
-						}}
-						
-						//TROUVER LE PLUS FAIBLE EN ECTS
-						//si indiceJoueurAdverse=1 enlever ECTS à lui
-						if(indiceCombat==1) {
-							tabZI.get(indiceZoneInflu).getTabEleveZone(indiceJoueurAdverse[0]).setECTS(tabZI.get(indiceZoneInflu).getTabEleveZone(indiceJoueurAdverse[0]).getECTS()-10);
-							//verif si le reuf est plus à l'UTT
-							tabZI.get(indiceZoneInflu).getTabEleveZone(indiceJoueurAdverse[0]).estilvire();
-						}
-						else if(indiceCombat>1){
 							
-							//trouver le plus faible en ECTS pour lui enlever des ECTS
-							int indiceMinEcts=indiceJoueurAdverse[0];
-							for(int indiceComb=1;indiceComb<indiceCombat;indiceComb++) {
-								if(tabZI.get(indiceZoneInflu).getTabEleveZone(indiceJoueurAdverse[indiceMinEcts]).getECTS()>tabZI.get(indiceZoneInflu).getTabEleveZone(indiceJoueurAdverse[indiceComb]).getECTS()) {
-									indiceMinEcts=indiceJoueurAdverse[indiceComb+1];
+							int indiceCombat=0;
+							
+							//tester si l'élève n'est pas mort?
+							//on regarde pour tous les élèves de la Zone Influence
+							for(int j=0;j<tabZI.get(indiceZoneInflu).getTabEleveZone().size();j++) {
+								
+								//.remove() dès qu'il est mort pas ce problème là car avec les tableaux ! 
+//								//si l'élève est mort continue car il ne peut pas attaquer
+//								if(tabZI.get(indiceZoneInflu).getTabEleveZone(j).isVire()) {
+//									continue;
+//								}
+								
+								if(j1.testEleve(tabZI.get(indiceZoneInflu).getTabEleveZone().get(j))){
+									//faire une fonction qui trouve la liste des élèves appartenant à un joueur (l'inverse cool de source)
+									ArrayList<Eleve> listEleveAdverse = tabZI.get(indiceZoneInflu).trouverEleveMemeJoueur(j2);
 								}
-							//lui enlever des ECTS
-							//-----------------------------
-							//faire fonction qui calcul combien perd l'ennemie en entrée élève qui attaque et élève qui prend dans sa gueuele!
-							tabZI.get(indiceZoneInflu).getTabEleveZone(indiceMinEcts).setECTS(tabZI.get(indiceZoneInflu).getTabEleveZone(indiceMinEcts).getECTS()-10);
-							//verif si le reuf est plus à l'UTT
-							tabZI.get(indiceZoneInflu).getTabEleveZone(indiceMinEcts).estilvire();
-														
-						}							
-						}
-						indiceCombat=0;
+								else{
+									ArrayList<Eleve> listEleveAdverse = tabZI.get(indiceZoneInflu).trouverEleveMemeJoueur(j1);
+								}
+								
+								//ranger la liste selon plus faible en ECTS:
+								listEleveAdverse.trierCrshECTS();
+								
+								//TROUVER LE PLUS FAIBLE EN ECTS
+								//si indiceJoueurAdverse=1 enlever ECTS à lui
+								if(indiceCombat==1) {
+									tabZI.get(indiceZoneInflu).getTabEleveZone(indiceJoueurAdverse[0]).setECTS(tabZI.get(indiceZoneInflu).getTabEleveZone(indiceJoueurAdverse[0]).getECTS()-10);
+									//verif si le reuf est plus à l'UTT
+									tabZI.get(indiceZoneInflu).getTabEleveZone(indiceJoueurAdverse[0]).estilvire();
+								}
+								else if(indiceCombat>1){
+									
+									//trouver le plus faible en ECTS pour lui enlever des ECTS
+									int indiceMinEcts=indiceJoueurAdverse[0];
+									for(int indiceComb=1;indiceComb<indiceCombat;indiceComb++) {
+										if(tabZI.get(indiceZoneInflu).getTabEleveZone(indiceJoueurAdverse[indiceMinEcts]).getECTS()>tabZI.get(indiceZoneInflu).getTabEleveZone(indiceJoueurAdverse[indiceComb]).getECTS()) {
+											indiceMinEcts=indiceJoueurAdverse[indiceComb+1];
+										}
+									//lui enlever des ECTS
+									//-----------------------------
+									//faire fonction qui calcul combien perd l'ennemie en entrée élève qui attaque et élève qui prend dans sa gueuele!
+									tabZI.get(indiceZoneInflu).getTabEleveZone(indiceMinEcts).setECTS(tabZI.get(indiceZoneInflu).getTabEleveZone(indiceMinEcts).getECTS()-10);
 						
+									}}}
 						
+						indiceElev++;
 					}
+					
+					
+					//si jamais la zone n'est controlé on sort de la boucle
+					if(!(tabZI.get(indiceZone).isControle(j1, j2))) {
+						break;
+					}
+					
+					//pour repasser sur toutes les zones
+					indiceZone++;
+					if(indiceZone==4) {
+						indiceZone=0;
+					}
+				}
+				
 				
 					
 					
